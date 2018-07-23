@@ -26,7 +26,6 @@ def get_requirements(filename):
 
         session = PipSession()
     except ImportError:
-        print("IMPORTERROR")
         session = None
 
     reqs = parse_requirements(filename, session=session)
