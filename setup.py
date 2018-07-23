@@ -35,8 +35,7 @@ def get_requirements(filename):
 
 
 meta = get_meta()
-from pprint import pprint
-pprint(meta)
+
 
 setup_args = dict(
     name='gae-utils',
