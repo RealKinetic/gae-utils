@@ -1,16 +1,19 @@
 from setuptools import find_packages, setup
 
-from pip.req import parse_requirements
+try: # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError: # for pip <= 9.0.3
+    from pip.req import parse_requirements
 
 
 def get_meta():
     mod_locals = {}
-
-    execfile(
-        'gae/__about__.py',
-        mod_locals,
-        mod_locals,
-    )
+    with open('./gae/__about__.py') as about_file:
+        exec(
+            about_file.read(),
+            mod_locals,
+            mod_locals,
+        )
 
     return dict(
         (k, v) for k, v in mod_locals.items() if k in mod_locals['__all__']
@@ -19,10 +22,11 @@ def get_meta():
 
 def get_requirements(filename):
     try:
-        from pip.download import PipSession
+        from pip._internal.download import PipSession
 
         session = PipSession()
     except ImportError:
+        print("IMPORTERROR")
         session = None
 
     reqs = parse_requirements(filename, session=session)
@@ -31,7 +35,8 @@ def get_requirements(filename):
 
 
 meta = get_meta()
-
+from pprint import pprint
+pprint(meta)
 
 setup_args = dict(
     name='gae-utils',
