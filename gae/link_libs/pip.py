@@ -4,13 +4,23 @@ pip
 
 from __future__ import absolute_import
 
-import pip.req
+try:
+    from pip import get_installed_distributions
+except ImportError:
+    from pip._internal.utils.misc import get_installed_distributions
+
+try:
+    from pip import req as pip_req
+except ImportError:
+    import pip._internal.req as pip_req
+
 
 from . import base
 
 
 __all__ = [
     'load_distributions',
+    "get_installed_distributions",
 ]
 
 
@@ -21,7 +31,7 @@ def load_requirements(requirements):
     """
     ret = []
 
-    for req in pip.req.parse_requirements(requirements, session=""):
+    for req in pip_req.parse_requirements(requirements, session=""):
         req_name = req.req.name
 
         installed_dist = base.get_installed_dist(req_name)

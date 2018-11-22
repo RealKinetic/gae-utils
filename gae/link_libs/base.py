@@ -3,9 +3,6 @@ from __future__ import absolute_import
 import imp
 import os.path
 
-import pip.req
-
-
 __all__ = [
     'get_installed_distributions',
     'link_distributions',
@@ -26,6 +23,8 @@ def get_installed_distributions():
     Returns a list of all the packages that are installed in this current
     environment.
     """
+    from gae.link_libs import pip
+    
     return pip.get_installed_distributions()
 
 
